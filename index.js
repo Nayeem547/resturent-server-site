@@ -63,7 +63,7 @@ async function run() {
       app.delete('/userStore/:id', async(req, res) => {
         const id = req.params.id;
         const queary = {_id: new ObjectId(id)}
-        const result = await cartesCollection.deleteOne(queary);
+        const result = await PurchaseCollection.deleteOne(queary);
         res.send(result);
     })
 
@@ -77,6 +77,19 @@ async function run() {
         .toArray();
         res.send(result);
     })
+
+    // app.post("/allfoods", async (req, res) => {
+    //     const newCard = req.body;
+    //     const result = await foodCollection.insertOne(newCard);
+    //     res.send(result);
+    //   });
+
+      app.post('/allfoods', async(req, res)=> {
+        const store = req.body;
+        console.log(store);
+        const result = await foodCollection.insertOne(store);
+        res.send(result);
+      })
 
 
     app.get('/productsCount', async(req, res) => {
