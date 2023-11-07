@@ -29,6 +29,9 @@ async function run() {
     await client.connect();
 
     const foodCollection = client.db('ResturentDB').collection('allfoods');
+    const userCollection = client.db('ResturentD').collection('user');
+
+    
 
     app.get('/allfoods', async(req, res) => {
         const page = parseInt(req.query.page);
