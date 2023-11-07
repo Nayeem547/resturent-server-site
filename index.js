@@ -29,7 +29,8 @@ async function run() {
     await client.connect();
 
     const foodCollection = client.db('ResturentDB').collection('allfoods');
-    const userCollection = client.db('ResturentD').collection('user');
+    const userCollection = client.db('ResturentDB').collection('user');
+    const PurchaseCollection = client.db("ResturentDB").collection("userStore");
 
     app.post('/user', async(req, res)=> {
         const user = req.body;
@@ -44,6 +45,27 @@ async function run() {
         const result = await userCollection.findOne(queary);
         res.send(result);
       })
+
+      app.post('/userStore', async(req, res)=> {
+        const store = req.body;
+        console.log(store);
+        const result = await PurchaseCollection.insertOne(store);
+        res.send(result);
+      })
+  
+      app.get('/userStore/:email', async(req, res) => {
+        const email = req.params.email;
+        const queary = {email: email};
+        const result = await PurchaseCollection.find(queary).toArray();
+        res.send(result);
+      })
+
+      app.delete('/userStore/:id', async(req, res) => {
+        const id = req.params.id;
+        const queary = {_id: new ObjectId(id)}
+        const result = await cartesCollection.deleteOne(queary);
+        res.send(result);
+    })
 
     app.get('/allfoods', async(req, res) => {
         const page = parseInt(req.query.page);
