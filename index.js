@@ -31,7 +31,19 @@ async function run() {
     const foodCollection = client.db('ResturentDB').collection('allfoods');
     const userCollection = client.db('ResturentD').collection('user');
 
-    
+    app.post('/user', async(req, res)=> {
+        const user = req.body;
+        console.log(user);
+        const result = await userCollection.insertOne(user);
+        res.send(result);
+      })
+  
+      app.get('/user/:email', async(req, res) => {
+        const email = req.params.email;
+        const queary = {email: email}
+        const result = await userCollection.findOne(queary);
+        res.send(result);
+      })
 
     app.get('/allfoods', async(req, res) => {
         const page = parseInt(req.query.page);
