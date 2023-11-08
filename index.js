@@ -91,6 +91,13 @@ async function run() {
         res.send(result);
       })
 
+      app.get('/allfoods/:email', async(req, res) => {
+        const email = req.params.email;
+        const queary = {email: email};
+        const result = await foodCollection.find(queary).toArray();
+        res.send(result);
+      })
+
 
     app.get('/productsCount', async(req, res) => {
         const count = await foodCollection.estimatedDocumentCount();
@@ -103,6 +110,27 @@ async function run() {
         const result = await foodCollection.findOne(queary);
         res.send(result);
       })
+
+      app.put('/allfoods/:id', async(req, res) => {
+        const id = req.params.id;
+        const filter = {_id: new ObjectId(id)}
+        const options = {upsert: true};
+        const UpdateCart = req.body;
+        const carte = {
+          $set: {
+          names:  UpdateCart.Food_Name,
+          image:  UpdateCart.Food_Image,
+          Brand:  UpdateCart.Food_Category,
+          Origin: UpdateCart.Food_Origin,
+          Quantity: UpdateCart.Quantity,
+          Price:  UpdateCart.Price, 
+          Description:  UpdateCart.Description,
+          }
+        }
+        const result = await foodCollection.updateOne(filter, carte, options)
+        res.send(result);
+      })
+  
 
 
 
